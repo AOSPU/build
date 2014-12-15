@@ -6,6 +6,13 @@ import os
 import re
 import sys
 
+if hasattr(dict, 'iteritems'):
+  def itervalues(obj):
+    return obj.itervalues()
+else:
+  def itervalues(obj):
+    return iter(obj.values())
+
 def fail_with_usage():
   sys.stderr.write("usage: java-layers.py DEPENDENCY_FILE SOURCE_DIRECTORIES...\n")
   sys.stderr.write("\n")
@@ -71,26 +78,26 @@ class Dependencies:
         if upper in deps:
           recurse(obj, deps[upper], visited)
     self.deps = deps
-    self.parts = [(dep.lower.split('.'),dep) for dep in deps.itervalues()]
+    self.parts = [(dep.lower.split('.'),dep) for dep in itervalues(deps)]
     # transitive closure of dependencies
-    for dep in deps.itervalues():
+    for dep in itervalues(deps):
       recurse(dep, dep, [])
     # disallow everything from the low level components
-    for dep in deps.itervalues():
+    for dep in itervalues(deps):
       if dep.lowlevel:
-        for d in deps.itervalues():
+        for d in itervalues(deps):
           if dep != d and not d.legacy:
             dep.transitive.add(d.lower)
     # disallow the 'top' components everywhere but in their own package
-    for dep in deps.itervalues():
+    for dep in itervalues(deps):
       if dep.top and not dep.legacy:
-        for d in deps.itervalues():
+        for d in itervalues(deps):
           if dep != d and not d.legacy:
             d.transitive.add(dep.lower)
-    for dep in deps.itervalues():
+    for dep in itervalues(deps):
       dep.transitive = set([x+"." for x in dep.transitive])
     if False:
-      for dep in deps.itervalues():
+      for dep in itervalues(deps):
         print("-->", dep.lower, "-->", dep.transitive)
 
   # Lookup the dep object for the given package.  If pkg is a subpackage

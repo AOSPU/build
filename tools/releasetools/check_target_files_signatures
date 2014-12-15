@@ -64,9 +64,13 @@ import common
 if hasattr(dict, 'iteritems'):
   def iteritems(obj):
     return obj.iteritems()
+  def itervalues(obj):
+    return obj.itervalues()
 else:
   def iteritems(obj):
     return iter(obj.items())
+  def itervalues(obj):
+    return iter(obj.values())
 
 # Work around a bug in python's zipfile module that prevents opening
 # of zipfiles if any entry has an extra field of between 1 and 3 bytes
@@ -268,7 +272,7 @@ class TargetFiles(object):
     """Look for any instances where packages signed with different
     certs request the same sharedUserId."""
     apks_by_uid = {}
-    for apk in self.apks.itervalues():
+    for apk in itervalues(self.apks):
       if apk.shared_uid:
         apks_by_uid.setdefault(apk.shared_uid, []).append(apk)
 
@@ -307,7 +311,7 @@ class TargetFiles(object):
   def PrintCerts(self):
     """Display a table of packages grouped by cert."""
     by_cert = {}
-    for apk in self.apks.itervalues():
+    for apk in itervalues(self.apks):
       for cert in apk.certs:
         by_cert.setdefault(cert, []).append((apk.package, apk))
 

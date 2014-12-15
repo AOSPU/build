@@ -199,8 +199,8 @@ class BlockImageDiff(object):
 
     # The range sets in each filemap should comprise a partition of
     # the care map.
-    self.AssertPartition(src.care_map, src.file_map.values())
-    self.AssertPartition(tgt.care_map, tgt.file_map.values())
+    self.AssertPartition(src.care_map, list(src.file_map.values()))
+    self.AssertPartition(tgt.care_map, list(tgt.file_map.values()))
 
   def Compute(self, prefix):
     # When looking for a source file to use as the diff input for a
