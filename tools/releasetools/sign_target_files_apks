@@ -87,6 +87,14 @@ import zipfile
 import add_img_to_target_files
 import common
 
+# iteritems becomes items in Python 3.0
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
 OPTIONS = common.OPTIONS
 
 OPTIONS.extra_apks = {}
@@ -100,11 +108,11 @@ def GetApkCerts(tf_zip):
   certmap = common.ReadApkCerts(tf_zip)
 
   # apply the key remapping to the contents of the file
-  for apk, cert in certmap.iteritems():
+  for apk, cert in iteritems(certmap):
     certmap[apk] = OPTIONS.key_map.get(cert, cert)
 
   # apply all the -e options, overriding anything in the file
-  for apk, cert in OPTIONS.extra_apks.iteritems():
+  for apk, cert in iteritems(OPTIONS.extra_apks):
     if not cert:
       cert = "PRESIGNED"
     certmap[apk] = OPTIONS.key_map.get(cert, cert)
@@ -252,7 +260,7 @@ def ReplaceCerts(data):
   """Given a string of data, replace all occurences of a set
   of X509 certs with a newer set of X509 certs and return
   the updated data string."""
-  for old, new in OPTIONS.key_map.iteritems():
+  for old, new in iteritems(OPTIONS.key_map):
     try:
       if OPTIONS.verbose:
         print("    Replacing %s.x509.pem with %s.x509.pem" % (old, new))

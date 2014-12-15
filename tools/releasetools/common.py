@@ -43,6 +43,14 @@ except ImportError:
 if not hasattr(os, "SEEK_SET"):
   os.SEEK_SET = 0
 
+# iteritems becomes items in Python 3.0
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
 class Options(object): pass
 OPTIONS = Options()
 
@@ -729,7 +737,7 @@ class PasswordManager(object):
     values.
     """
     result = {}
-    for k, v in sorted(current.iteritems()):
+    for k, v in sorted(current.items()):
       if v:
         result[k] = v
       else:
@@ -749,7 +757,7 @@ class PasswordManager(object):
     f.write("# (Additional spaces are harmless.)\n\n")
 
     first_line = None
-    sorted = [(not v, k, v) for (k, v) in current.iteritems()]
+    sorted = [(not v, k, v) for (k, v) in iteritems(current)]
     sorted.sort()
     for i, (_, k, v) in enumerate(sorted):
       f.write("[[[  %s  ]]] %s\n" % (v, k))
@@ -801,7 +809,7 @@ class DeviceSpecificParams(object):
     """Keyword arguments to the constructor become attributes of this
     object, which is passed to all functions in the device-specific
     module."""
-    for k, v in kwargs.iteritems():
+    for k, v in iteritems(kwargs):
       setattr(self, k, v)
     self.extras = OPTIONS.extras
 

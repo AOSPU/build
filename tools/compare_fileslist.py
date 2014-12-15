@@ -19,6 +19,14 @@ from __future__ import print_function
 
 import cgi, os, string, sys
 
+# iteritems becomes items in Python 3.0
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
 def IsDifferent(row):
   val = None
   for v in row:
@@ -46,7 +54,7 @@ def main(argv):
       data[fn][index] = sz
     index = index + 1
   rows = []
-  for fn,sizes in data.iteritems():
+  for fn,sizes in iteritems(data):
     row = [fn]
     for i in range(0,index):
       if sizes.has_key(i):

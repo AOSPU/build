@@ -107,6 +107,14 @@ import build_image
 import blockimgdiff
 import sparse_img
 
+# iteritems becomes items in Python 3.0
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
 OPTIONS = common.OPTIONS
 OPTIONS.package_key = None
 OPTIONS.incremental_source = None
@@ -131,7 +139,7 @@ OPTIONS.fallback_to_full = True
 def MostPopularKey(d, default):
   """Given a dict, return the key corresponding to the largest
   value.  Returns 'default' if the dict is empty."""
-  x = [(v, k) for (k, v) in d.iteritems()]
+  x = [(v, k) for (k, v) in iteritems(d)]
   if not x: return default
   x.sort()
   return x[-1][1]
@@ -270,7 +278,7 @@ class Item:
     d = self.descendants = {(self.uid, self.gid, self.mode, None, self.selabel, self.capabilities): 1}
     for i in self.children:
       if i.dir:
-        for k, v in i.CountChildMetadata().iteritems():
+        for k, v in iteritems(i.CountChildMetadata()):
           d[k] = d.get(k, 0) + v
       else:
         k = (i.uid, i.gid, None, i.mode, i.selabel, i.capabilities)
@@ -282,7 +290,7 @@ class Item:
     # First, find the (uid, gid) pair that matches the most
     # descendants.
     ug = {}
-    for (uid, gid, _, _, _, _), count in d.iteritems():
+    for (uid, gid, _, _, _, _), count in iteritems(d):
       ug[(uid, gid)] = ug.get((uid, gid), 0) + count
     ug = MostPopularKey(ug, (0, 0))
 
@@ -292,7 +300,7 @@ class Item:
     best_fmode = (0, 0644)
     best_selabel = (0, None)
     best_capabilities = (0, None)
-    for k, count in d.iteritems():
+    for k, count in iteritems(d):
       if k[:2] != ug: continue
       if k[2] is not None and count >= best_dmode[0]: best_dmode = (count, k[2])
       if k[3] is not None and count >= best_fmode[0]: best_fmode = (count, k[3])
@@ -656,7 +664,7 @@ def WritePolicyConfig(file_context, output_zip):
 def WriteMetadata(metadata, output_zip):
   common.ZipWriteStr(output_zip, "META-INF/com/android/metadata",
                      "".join(["%s=%s\n" % kv
-                              for kv in sorted(metadata.iteritems())]))
+                              for kv in sorted(metadata.items())]))
 
 
 def LoadPartitionFiles(z, partition):
@@ -1027,7 +1035,7 @@ class FileDifference:
   def EmitRenames(self, script):
     if len(self.renames) > 0:
       script.Print("Renaming files...")
-      for src, tgt in self.renames.iteritems():
+      for src, tgt in iteritems(self.renames):
         print("Renaming " + src + " to " + tgt.name)
         script.RenameFile(src, tgt.name)
 

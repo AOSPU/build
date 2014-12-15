@@ -8,6 +8,15 @@ import re
 import sys
 
 
+# iteritems becomes items in Python 3.0
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
+
 class Dependency:
   def __init__(self, tgt):
     self.tgt = tgt
@@ -51,7 +60,7 @@ class Dependencies:
       return None
 
   def __iter__(self):
-    return self.lines.iteritems()
+    return iteritems(self.lines)
 
   def trace(self, tgt, prereq):
     self.__visit = self.__visit + 1

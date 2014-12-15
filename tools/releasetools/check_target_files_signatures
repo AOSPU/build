@@ -61,6 +61,13 @@ except ImportError:
 
 import common
 
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
 # Work around a bug in python's zipfile module that prevents opening
 # of zipfiles if any entry has an extra field of between 1 and 3 bytes
 # (which is common with zipaligned APKs).  This overrides the
@@ -284,7 +291,7 @@ class TargetFiles(object):
       print()
 
   def CheckExternalSignatures(self):
-    for apk_filename, certname in self.certmap.iteritems():
+    for apk_filename, certname in iteritems(self.certmap):
       if certname == "EXTERNAL":
         # Apps marked EXTERNAL should be signed with the test key
         # during development, then manually re-signed after
@@ -304,7 +311,7 @@ class TargetFiles(object):
       for cert in apk.certs:
         by_cert.setdefault(cert, []).append((apk.package, apk))
 
-    order = [(-len(v), k) for (k, v) in by_cert.iteritems()]
+    order = [(-len(v), k) for (k, v) in iteritems(by_cert)]
     order.sort()
 
     for _, cert in order:

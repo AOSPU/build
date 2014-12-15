@@ -44,7 +44,7 @@ def parse_variables(lines):
 def render_variables(variables):
   variables = dict(variables)
   del variables["FILE"]
-  variables = list(variables.iteritems())
+  variables = list(variables.items())
   variables.sort(lambda a, b: cmp(a[0], b[0]))
   return ("<table id='variables'>"
       + "\n".join([ "<tr><th>%(key)s</th><td>%(val)s</td></tr>" % { "key": key, "val": val }

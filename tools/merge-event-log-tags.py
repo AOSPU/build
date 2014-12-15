@@ -156,7 +156,7 @@ def hashname(str):
 # If we were provided pre-merged tags (w/ the -m option), then don't
 # ever try to allocate one, just fail if we don't have a number
 
-for name, t in sorted(by_tagname.iteritems()):
+for name, t in sorted(by_tagname.items()):
   if t.tagnum is None:
     if pre_merged_tags:
       try:
@@ -177,7 +177,7 @@ for name, t in sorted(by_tagname.iteritems()):
 # by_tagnum should be complete now; we've assigned numbers to all tags.
 
 buffer = cStringIO.StringIO()
-for n, t in sorted(by_tagnum.iteritems()):
+for n, t in sorted(by_tagnum.items()):
   if t.description:
     buffer.write("%d %s %s\n" % (t.tagnum, t.tagname, t.description))
   else:

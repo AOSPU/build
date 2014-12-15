@@ -16,6 +16,14 @@
 
 import sys
 
+# iteritems becomes items in Python 3.0
+if hasattr(dict, 'iteritems'):
+  def iteritems(obj):
+    return obj.iteritems()
+else:
+  def iteritems(obj):
+    return iter(obj.items())
+
 # Usage: post_process_props.py file.prop [blacklist_key, ...]
 # Blacklisted keys are removed from the property file, if present
 
@@ -58,7 +66,7 @@ def validate(prop):
   buildprops = prop.to_dict()
   dev_build = buildprops.get("ro.build.version.incremental",
                              "").startswith("eng")
-  for key, value in buildprops.iteritems():
+  for key, value in iteritems(buildprops):
     # Check build properties' length.
     if len(key) > PROP_NAME_MAX:
       check_pass = False
