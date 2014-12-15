@@ -95,7 +95,7 @@ def CreateImage(input_dir, info_dict, what, block_list=None):
   try:
     os.symlink(os.path.join(input_dir, what.upper()),
                os.path.join(input_dir, what))
-  except OSError, e:
+  except OSError as e:
       # bogus error on my mac version?
       #   File "./build/tools/releasetools/img_from_target_files", line 86, in AddSystem
       #     os.path.join(OPTIONS.input_tmp, "system"))
@@ -261,7 +261,7 @@ if __name__ == '__main__':
   try:
     common.CloseInheritedPipes()
     main(sys.argv[1:])
-  except common.ExternalError, e:
+  except common.ExternalError as e:
     print()
     print("   ERROR: %s" % (e,))
     print()

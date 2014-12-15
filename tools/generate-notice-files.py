@@ -43,7 +43,7 @@ HTML_ESCAPE_TABLE = {
 
 try:
   opts, args = getopt.getopt(sys.argv[1:], "h")
-except getopt.GetoptError, err:
+except getopt.GetoptError as err:
     print(str(err))
     print(__doc__)
     sys.exit(2)

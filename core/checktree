@@ -110,6 +110,6 @@ try:
     for s in extras:
         print(s.replace(" ", "\\ "))
 
-except PerforceError, e:
+except PerforceError:
     sys.exit(2)
 

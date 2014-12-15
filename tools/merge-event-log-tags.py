@@ -50,7 +50,7 @@ ASSIGN_LIMIT = 1000000
 
 try:
   opts, args = getopt.getopt(sys.argv[1:], "ho:m:")
-except getopt.GetoptError, err:
+except getopt.GetoptError as err:
   print(str(err))
   print(__doc__)
   sys.exit(2)

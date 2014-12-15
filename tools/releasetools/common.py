@@ -108,7 +108,7 @@ def LoadInfoDict(input):
       try:
         with open(path) as f:
           return f.read()
-      except IOError, e:
+      except IOError as e:
         if e.errno == errno.ENOENT:
           raise KeyError(fn)
   d = {}
@@ -624,7 +624,7 @@ def ParseOptions(argv,
          "java_path=", "java_args=", "public_key_suffix=",
          "private_key_suffix=", "device_specific=", "extra="] +
         list(extra_long_opts))
-  except getopt.GetoptError, err:
+  except getopt.GetoptError as err:
     Usage(docstring)
     print("**", str(err), "**")
     sys.exit(2)
@@ -777,7 +777,7 @@ class PasswordManager(object):
         else:
           result[m.group(2)] = m.group(1)
       f.close()
-    except IOError, e:
+    except IOError as e:
       if e.errno != errno.ENOENT:
         print("error reading password file: ", str(e))
     return result
@@ -1012,7 +1012,7 @@ def ComputeDifferences(diffs):
           print("%8.2f sec %8d / %8d bytes (%6.2f%%) %s" % (
               dur, len(patch), tf.size, 100.0 * len(patch) / tf.size, name))
       lock.release()
-    except Exception, e:
+    except Exception as e:
       print(e)
       raise
 
@@ -1190,7 +1190,7 @@ fi
           sh_location = m.group(1)
           print("putting script in", sh_location)
           break
-  except (OSError, IOError), e:
+  except (OSError, IOError) as e:
     print("failed to read init.rc: %s" % (e,))
 
   output_sink(sh_location, sh)

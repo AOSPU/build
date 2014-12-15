@@ -268,7 +268,7 @@ def ReplaceCerts(data):
       if OPTIONS.verbose:
         print("    Replaced %d occurence(s) of %s.x509.pem with "
               "%s.x509.pem" % (num, old, new))
-    except IOError, e:
+    except IOError as e:
       if (e.errno == errno.ENOENT and not OPTIONS.verbose):
         continue
 
@@ -492,7 +492,7 @@ def main(argv):
 if __name__ == '__main__':
   try:
     main(sys.argv[1:])
-  except common.ExternalError, e:
+  except common.ExternalError as e:
     print()
     print("   ERROR: %s" % (e,))
     print()

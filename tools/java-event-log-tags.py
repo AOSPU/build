@@ -38,7 +38,7 @@ output_file = None
 
 try:
   opts, args = getopt.getopt(sys.argv[1:], "ho:")
-except getopt.GetoptError, err:
+except getopt.GetoptError as err:
   print(str(err))
   print(__doc__)
   sys.exit(2)

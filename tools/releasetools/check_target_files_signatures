@@ -436,7 +436,7 @@ if __name__ == '__main__':
   try:
     r = main(sys.argv[1:])
     sys.exit(r)
-  except common.ExternalError, e:
+  except common.ExternalError as e:
     print()
     print("   ERROR: %s" % (e,))
     print()

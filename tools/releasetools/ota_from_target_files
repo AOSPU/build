@@ -1543,7 +1543,7 @@ if __name__ == '__main__':
   try:
     common.CloseInheritedPipes()
     main(sys.argv[1:])
-  except common.ExternalError, e:
+  except common.ExternalError as e:
     print()
     print("   ERROR: %s" % (e,))
     print()
