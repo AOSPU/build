@@ -27,7 +27,7 @@ import sys
 
 def perform_find(mindepth, prune, dirlist, filename):
   result = []
-  pruneleaves = set(map(lambda x: os.path.split(x)[1], prune))
+  pruneleaves = [os.path.split(x)[1] for x in prune]
   for rootdir in dirlist:
     rootdepth = rootdir.count("/")
     for root, dirs, files in os.walk(rootdir, followlinks=True):

@@ -13,7 +13,7 @@ excludes = [r'.*?/\.obj.*?',
             r'.*?/out/.*?',
             r'.*?/install/.*?']
 
-excludes_compiled = map(re.compile, excludes)
+excludes_compiled = [re.compile(e) for e in excludes]
 
 def filter_excludes(str):
     for e in excludes_compiled:
@@ -62,9 +62,9 @@ def run(command, regex, filt):
     filt_compiled = re.compile(filt)
 
     if len(lines) >= 1:
-        lines = filter(filterit, lines)
+        lines = [l for l in lines if filterit(l)]
         if len(lines) >= 1:
-            return map(matchit, lines)
+            return [matchit(l) for l in lines]
     return None
 
 try:
@@ -81,16 +81,16 @@ try:
 
     cwd = os.getcwd()
     files = run("find . -not -type d", r'.(.*)', r'.*')
-    files = map(lambda s: cwd+s, files)
+    files = [cwd+s for s in files]
 
     added_depot_path = run("p4 opened ...", r'([^#]+)#.*', r'.*?#[0-9]+ - add .*');
     added = []
     if added_depot_path:
-        added_depot_path = map(quotate, added_depot_path)
+        added_depot_path = [quotate(s) for s in added_depot_path]
 
         where = "p4 where " + " ".join(added_depot_path)
         added = run(where, r'(.*)', r'.*')
-        added = map(split_perforce_parts, added)
+        added = [split_perforce_parts(a) for a in added]
 
     extras = []
 
@@ -105,7 +105,7 @@ try:
                 extras.append(file)
 
     if do_exclude:
-        extras = filter(filter_excludes, extras)
+        extras = (e for e in extras if filter_excludes(e))
 
     for s in extras:
         print(s.replace(" ", "\\ "))

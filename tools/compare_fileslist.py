@@ -46,8 +46,8 @@ def main(argv):
     f = file(input, "r")
     lines = f.readlines()
     f.close()
-    lines = map(string.split, lines)
-    lines = map(lambda (x,y): (y,int(x)), lines)
+    lines = [s.split() for s in lines]
+    lines = [(y, int(x)) for x, y in lines]
     for fn,sz in lines:
       if not data.has_key(fn):
         data[fn] = {}
