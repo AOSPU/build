@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 
+from __future__ import print_function
+
 import cgi, os, string, sys
 
 def IsDifferent(row):
@@ -53,7 +55,7 @@ def main(argv):
         row.append(None)
     rows.append(row)
   rows = sorted(rows, key=lambda x: x[0])
-  print """<html>
+  print("""<html>
     <head>
       <style type="text/css">
         .fn, .sz, .z, .d {
@@ -78,27 +80,27 @@ def main(argv):
       </style>
     </head>
     <body>
-  """
-  print "<table>"
-  print "<tr>"
+  """)
+  print("<table>")
+  print("<tr>")
   for input in inputs:
     combo = input.split(os.path.sep)[1]
-    print "  <td class='fn'>%s</td>" % cgi.escape(combo)
-  print "</tr>"
+    print("  <td class='fn'>%s</td>" % cgi.escape(combo))
+  print("</tr>")
 
   for row in rows:
-    print "<tr>"
+    print("<tr>")
     for sz in row[1:]:
       if not sz:
-        print "  <td class='z'>&nbsp;</td>"
+        print("  <td class='z'>&nbsp;</td>")
       elif IsDifferent(row[1:]):
-        print "  <td class='d'>%d</td>" % sz
+        print("  <td class='d'>%d</td>" % sz)
       else:
-        print "  <td class='sz'>%d</td>" % sz
-    print "  <td class='fn'>%s</td>" % cgi.escape(row[0])
-    print "</tr>"
-  print "</table>"
-  print "</body></html>"
+        print("  <td class='sz'>%d</td>" % sz)
+    print("  <td class='fn'>%s</td>" % cgi.escape(row[0]))
+    print("</tr>")
+  print("</table>")
+  print("</body></html>")
 
 if __name__ == '__main__':
   main(sys.argv)

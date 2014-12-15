@@ -22,10 +22,12 @@ add them to the zipfile.
 Usage:  add_img_to_target_files target_files
 """
 
+from __future__ import print_function
+
 import sys
 
 if sys.hexversion < 0x02070000:
-  print >> sys.stderr, "Python 2.7 or newer is required."
+  print("Python 2.7 or newer is required.", file=sys.stderr)
   sys.exit(1)
 
 import errno
@@ -83,7 +85,7 @@ def BuildVendor(input_dir, info_dict, block_list=None):
 
 
 def CreateImage(input_dir, info_dict, what, block_list=None):
-  print "creating " + what + ".img..."
+  print("creating " + what + ".img...")
 
   img = common.MakeTempFile(prefix=what + "-", suffix=".img")
 
@@ -139,7 +141,7 @@ def AddUserdata(output_zip, prefix="IMAGES/"):
       not image_props.get("partition_size")):
     return
 
-  print "creating userdata.img..."
+  print("creating userdata.img...")
 
   # The name of the directory it is making an image out of matters to
   # mkyaffs2image.  So we create a temp dir, and within it we create an
@@ -171,7 +173,7 @@ def AddCache(output_zip, prefix="IMAGES/"):
   if "fs_type" not in image_props:
     return
 
-  print "creating cache.img..."
+  print("creating cache.img...")
 
   # The name of the directory it is making an image out of matters to
   # mkyaffs2image.  So we create a temp dir, and within it we create an
@@ -199,7 +201,7 @@ def AddImagesToTargetFiles(filename):
 
   for n in input_zip.namelist():
     if n.startswith("IMAGES/"):
-      print "target_files appears to already contain images."
+      print("target_files appears to already contain images.")
       sys.exit(1)
 
   try:
@@ -218,7 +220,7 @@ def AddImagesToTargetFiles(filename):
                                compression=zipfile.ZIP_DEFLATED)
 
   def banner(s):
-    print "\n\n++++ " + s + " ++++\n\n"
+    print("\n\n++++ " + s + " ++++\n\n")
 
   banner("boot")
   boot_image = common.GetBootableImage(
@@ -253,16 +255,16 @@ def main(argv):
     sys.exit(1)
 
   AddImagesToTargetFiles(args[0])
-  print "done."
+  print("done.")
 
 if __name__ == '__main__':
   try:
     common.CloseInheritedPipes()
     main(sys.argv[1:])
   except common.ExternalError, e:
-    print
-    print "   ERROR: %s" % (e,)
-    print
+    print()
+    print("   ERROR: %s" % (e,))
+    print()
     sys.exit(1)
   finally:
     common.Cleanup()

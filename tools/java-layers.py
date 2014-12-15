@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import os
 import re
 import sys
@@ -89,7 +91,7 @@ class Dependencies:
       dep.transitive = set([x+"." for x in dep.transitive])
     if False:
       for dep in deps.itervalues():
-        print "-->", dep.lower, "-->", dep.transitive
+        print("-->", dep.lower, "-->", dep.transitive)
 
   # Lookup the dep object for the given package.  If pkg is a subpackage
   # of one with a rule, that one will be returned.  If no matches are found,
@@ -218,8 +220,8 @@ def examine_java_file(deps, filename):
     imports.append(m.group(1))
   # Do the checking
   if False:
-    print filename
-    print "'%s' --> %s" % (pkg, imports)
+    print(filename)
+    print("'%s' --> %s" % (pkg, imports))
   dep = deps.lookup(pkg)
   if not dep:
     sys.stderr.write(("%s: Error: Package does not appear in dependency file: "

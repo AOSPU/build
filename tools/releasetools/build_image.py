@@ -20,6 +20,9 @@ Build image output_image_file from input_directory and properties_file.
 Usage:  build_image input_directory properties_file output_image_file
 
 """
+
+from __future__ import print_function
+
 import os
 import os.path
 import subprocess
@@ -38,7 +41,7 @@ def RunCommand(cmd):
   Returns:
     The exit code.
   """
-  print "Running: ", " ".join(cmd)
+  print("Running: ", " ".join(cmd))
   p = subprocess.Popen(cmd)
   p.communicate()
   return p.returncode
@@ -48,7 +51,7 @@ def GetVerityTreeSize(partition_size):
   cmd %= partition_size
   status, output = commands.getstatusoutput(cmd)
   if status:
-    print output
+    print(output)
     return False, 0
   return True, int(output)
 
@@ -57,7 +60,7 @@ def GetVerityMetadataSize(partition_size):
   cmd %= partition_size
   status, output = commands.getstatusoutput(cmd)
   if status:
-    print output
+    print(output)
     return False, 0
   return True, int(output)
 
@@ -80,10 +83,10 @@ def AdjustPartitionSizeForVerity(partition_size):
 
 def BuildVerityTree(sparse_image_path, verity_image_path, prop_dict):
   cmd = ("build_verity_tree -A %s %s %s" % (FIXED_SALT, sparse_image_path, verity_image_path))
-  print cmd
+  print(cmd)
   status, output = commands.getstatusoutput(cmd)
   if status:
-    print "Could not build verity tree! Error: %s" % output
+    print("Could not build verity tree! Error: %s" % output)
     return False
   root, salt = output.split()
   prop_dict["verity_root_hash"] = root
@@ -100,10 +103,10 @@ def BuildVerityMetadata(image_size, verity_metadata_path, root_hash, salt,
               block_device,
               signer_path,
               key))
-  print cmd
+  print(cmd)
   status, output = commands.getstatusoutput(cmd)
   if status:
-    print "Could not build verity metadata! Error: %s" % output
+    print("Could not build verity metadata! Error: %s" % output)
     return False
   return True
 
@@ -118,10 +121,10 @@ def Append2Simg(sparse_image_path, unsparse_image_path, error_message):
   """
   cmd = "append2simg %s %s"
   cmd %= (sparse_image_path, unsparse_image_path)
-  print cmd
+  print(cmd)
   status, output = commands.getstatusoutput(cmd)
   if status:
-    print "%s: %s" % (error_message, output)
+    print("%s: %s" % (error_message, output))
     return False
   return True
 
@@ -355,7 +358,7 @@ def LoadGlobalDict(filename):
 
 def main(argv):
   if len(argv) != 3:
-    print __doc__
+    print(__doc__)
     sys.exit(1)
 
   in_dir = argv[0]
@@ -376,12 +379,12 @@ def main(argv):
   elif image_filename == "oem.img":
     mount_point = "oem"
   else:
-    print >> sys.stderr, "error: unknown image file name ", image_filename
+    print("error: unknown image file name ", image_filename, file=sys.stderr)
     exit(1)
 
   image_properties = ImagePropFromGlobalDict(glob_dict, mount_point)
   if not BuildImage(in_dir, image_properties, out_file):
-    print >> sys.stderr, "error: failed to build %s from %s" % (out_file, in_dir)
+    print("error: failed to build %s from %s" % (out_file, in_dir), file=sys.stderr)
     exit(1)
 
 

@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
+
 import os
 import re
 import sys
@@ -105,7 +107,7 @@ def main(argv):
     "variables": render_variables(variables),
     "original": render_original(variables, original),
   })
-  print """<html>
+  print("""<html>
 
 
 <head>
@@ -154,7 +156,7 @@ def main(argv):
 %(variables)s
 </body>
 </html>
-""" % values
+""" % values)
 
 if __name__ == "__main__":
   main(sys.argv)
