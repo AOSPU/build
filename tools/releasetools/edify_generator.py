@@ -348,4 +348,4 @@ class EdifyGenerator(object):
     else:
       data = open(input_path, "rb").read()
     common.ZipWriteStr(output_zip, "META-INF/com/google/android/update-binary",
-                       data, perms=0755)
+                       data, perms=0o755)

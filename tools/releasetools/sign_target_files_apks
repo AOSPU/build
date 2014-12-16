@@ -243,7 +243,7 @@ def ProcessTargetFiles(input_tf_zip, output_tf_zip, misc_info,
   if OPTIONS.replace_ota_keys:
     new_recovery_keys = ReplaceOtaKeys(input_tf_zip, output_tf_zip, misc_info)
     if new_recovery_keys:
-      write_to_temp("RECOVERY/RAMDISK/res/keys", 0755 << 16, new_recovery_keys)
+      write_to_temp("RECOVERY/RAMDISK/res/keys", 0o755 << 16, new_recovery_keys)
 
   if rebuild_recovery:
     recovery_img = common.GetBootableImage(

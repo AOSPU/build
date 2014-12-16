@@ -752,7 +752,7 @@ class PasswordManager(object):
       return self.PromptResult(current)
 
     f = open(self.pwfile, "w")
-    os.chmod(self.pwfile, 0600)
+    os.chmod(self.pwfile, 0o600)
     f.write("# Enter key passwords between the [[[ ]]] brackets.\n")
     f.write("# (Additional spaces are harmless.)\n\n")
 
@@ -791,7 +791,7 @@ class PasswordManager(object):
     return result
 
 
-def ZipWriteStr(zip, filename, data, perms=0644, compression=None):
+def ZipWriteStr(zip, filename, data, perms=0o644, compression=None):
   # use a fixed timestamp so the output is repeatable.
   zinfo = zipfile.ZipInfo(filename=filename,
                           date_time=(2009, 1, 1, 0, 0, 0))
