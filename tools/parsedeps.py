@@ -54,7 +54,7 @@ class Dependencies:
     t.pos = pos
 
   def get(self, tgt):
-    if self.lines.has_key(tgt):
+    if tgt in self.lines:
       return self.lines[tgt]
     else:
       return None

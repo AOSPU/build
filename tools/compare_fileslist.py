@@ -49,7 +49,7 @@ def main(argv):
     lines = [s.split() for s in lines]
     lines = [(y, int(x)) for x, y in lines]
     for fn,sz in lines:
-      if not data.has_key(fn):
+      if fn not in data:
         data[fn] = {}
       data[fn][index] = sz
     index = index + 1
@@ -57,7 +57,7 @@ def main(argv):
   for fn,sizes in iteritems(data):
     row = [fn]
     for i in range(0,index):
-      if sizes.has_key(i):
+      if i in sizes:
         row.append(sizes[i])
       else:
         row.append(None)
