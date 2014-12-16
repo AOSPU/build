@@ -51,6 +51,10 @@ else:
   def iteritems(obj):
     return iter(obj.items())
 
+# raw_input is input in Python 3
+if not hasattr(__builtins__, 'raw_input'):
+  raw_input = input
+
 class Options(object): pass
 OPTIONS = Options()
 
