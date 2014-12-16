@@ -26,7 +26,6 @@ and fails if they do.
 
 from __future__ import print_function
 
-import cStringIO
 import getopt
 try:
   import hashlib
@@ -34,6 +33,11 @@ except ImportError:
   import md5 as hashlib
 import struct
 import sys
+
+try:
+  from cStringIO import StringIO
+except ImportError:
+  from io import StringIO
 
 import event_log_tags
 
@@ -176,7 +180,7 @@ for name, t in sorted(by_tagname.items()):
 
 # by_tagnum should be complete now; we've assigned numbers to all tags.
 
-buffer = cStringIO.StringIO()
+buffer = StringIO()
 for n, t in sorted(by_tagnum.items()):
   if t.description:
     buffer.write("%d %s %s\n" % (t.tagnum, t.tagname, t.description))

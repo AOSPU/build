@@ -74,7 +74,6 @@ if sys.hexversion < 0x02070000:
   sys.exit(1)
 
 import base64
-import cStringIO
 import copy
 import errno
 import os
@@ -83,6 +82,11 @@ import shutil
 import subprocess
 import tempfile
 import zipfile
+
+try:
+  from cStringIO import StringIO
+except ImportError:
+  from io import StringIO
 
 import add_img_to_target_files
 import common
@@ -388,7 +392,7 @@ def ReplaceOtaKeys(input_tf_zip, output_tf_zip, misc_info):
   # put into a zipfile system/etc/security/otacerts.zip.
   # We DO NOT include the extra_recovery_keys (if any) here.
 
-  tempfile = cStringIO.StringIO()
+  tempfile = StringIO()
   certs_zip = zipfile.ZipFile(tempfile, "w")
   for k in mapped_keys:
     certs_zip.write(k)

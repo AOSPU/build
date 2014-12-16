@@ -27,9 +27,14 @@ import os
 import os.path
 import subprocess
 import sys
-import commands
 import shutil
 import tempfile
+
+# getstatusoutput was moved to subprocess in py3
+try:
+  from commands import getstatusoutput
+except ImportError:
+  getstatusoutput = subprocess.getstatusoutput
 
 FIXED_SALT = "aee087a5be3b982978c923f566a94613496b417f2af592639bc80d141e34dfe7"
 
@@ -49,7 +54,7 @@ def RunCommand(cmd):
 def GetVerityTreeSize(partition_size):
   cmd = "build_verity_tree -s %d"
   cmd %= partition_size
-  status, output = commands.getstatusoutput(cmd)
+  status, output = getstatusoutput(cmd)
   if status:
     print(output)
     return False, 0
@@ -58,7 +63,7 @@ def GetVerityTreeSize(partition_size):
 def GetVerityMetadataSize(partition_size):
   cmd = "system/extras/verity/build_verity_metadata.py -s %d"
   cmd %= partition_size
-  status, output = commands.getstatusoutput(cmd)
+  status, output = getstatusoutput(cmd)
   if status:
     print(output)
     return False, 0
@@ -84,7 +89,7 @@ def AdjustPartitionSizeForVerity(partition_size):
 def BuildVerityTree(sparse_image_path, verity_image_path, prop_dict):
   cmd = ("build_verity_tree -A %s %s %s" % (FIXED_SALT, sparse_image_path, verity_image_path))
   print(cmd)
-  status, output = commands.getstatusoutput(cmd)
+  status, output = getstatusoutput(cmd)
   if status:
     print("Could not build verity tree! Error: %s" % output)
     return False
@@ -104,7 +109,7 @@ def BuildVerityMetadata(image_size, verity_metadata_path, root_hash, salt,
               signer_path,
               key))
   print(cmd)
-  status, output = commands.getstatusoutput(cmd)
+  status, output = getstatusoutput(cmd)
   if status:
     print("Could not build verity metadata! Error: %s" % output)
     return False
@@ -122,7 +127,7 @@ def Append2Simg(sparse_image_path, unsparse_image_path, error_message):
   cmd = "append2simg %s %s"
   cmd %= (sparse_image_path, unsparse_image_path)
   print(cmd)
-  status, output = commands.getstatusoutput(cmd)
+  status, output = getstatusoutput(cmd)
   if status:
     print("%s: %s" % (error_message, output))
     return False

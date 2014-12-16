@@ -25,12 +25,16 @@ tags in the given input file.
 
 from __future__ import print_function
 
-import cStringIO
 import getopt
 import os
 import os.path
 import re
 import sys
+
+try:
+  from cStringIO import StringIO
+except ImportError:
+  from io import StringIO
 
 import event_log_tags
 
@@ -90,7 +94,7 @@ if tagfile.errors:
     print("%s:%d: error: %s" % (fn, ln, msg), file=sys.stderr)
   sys.exit(1)
 
-buffer = cStringIO.StringIO()
+buffer = StringIO()
 buffer.write("/* This file is auto-generated.  DO NOT MODIFY.\n"
              " * Source file: %s\n"
              " */\n\n" % (fn,))
