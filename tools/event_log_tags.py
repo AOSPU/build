@@ -66,6 +66,8 @@ class TagFile(object):
         self.linenum += 1
 
         line = line.strip()
+        if not hasattr(line, "encode"):  # it's bytes
+          line = line.decode()
         if not line or line[0] == '#': continue
         parts = re.split(r"\s+", line, 2)
 
@@ -124,6 +126,8 @@ def WriteOutput(output_file, data):
   'data' may be a string or a StringIO object."""
   if not isinstance(data, str):
     data = data.getvalue()
+  if hasattr(data, "encode"):
+    data = data.encode()
   try:
     if output_file is None:
       out = sys.stdout
