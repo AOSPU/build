@@ -274,7 +274,7 @@ class BlockImageDiff(object):
           out.append("%s %s\n" % (xf.style, to_zero.to_string_raw()))
           total += to_zero.size()
       else:
-        raise ValueError, "unknown transfer style '%s'\n" % (xf.style,)
+        raise ValueError("unknown transfer style '%s'\n" % (xf.style,))
 
     out.insert(1, str(total) + "\n")
 
